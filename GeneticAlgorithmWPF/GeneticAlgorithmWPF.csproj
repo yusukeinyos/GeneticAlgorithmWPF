@@ -62,7 +62,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\InputDataModel.cs" />
     <Compile Include="TravellingSalesmanProblem\Model\City.cs" />
     <Compile Include="TravellingSalesmanProblem\Utility\CityUtility.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
