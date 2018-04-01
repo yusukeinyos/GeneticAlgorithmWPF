@@ -12,9 +12,9 @@
         </Border>
         <Label Content="入力データ" HorizontalAlignment="Left" Margin="426,10,0,0" VerticalAlignment="Top"/>
         <Button x:Name="InputFileNameButton" Content="選択" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,39,0,0" Click="InputFileNameButton_Click"/>
-        <Button x:Name="ConfigButton" Content="設定" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,77,0,0"/>
+        <Button x:Name="ConfigButton" Content="設定" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,77,0,0" Click="ConfigButton_Click"/>
         <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="426,77,0,0"/>
-        <Button x:Name="ExecuteAllButton" Content="実行" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,387,0,0"/>
+        <Button x:Name="ExecuteAllButton" Content="実行" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,387,0,0" Click="ExecuteAllButton_Click"/>
         <Label x:Name="InputFileNameLabel" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="426,36,0,0" Width="276"/>
     </Grid>
 </Window>
