@@ -14,5 +14,20 @@ namespace GeneticAlgorithmWPF.TravellingSalesmanProblem.Utility
             var y1minus2 = city1.Y - city2.Y;
             return Math.Sqrt(x1minus2 * x1minus2 + y1minus2 * y1minus2);
         }
+
+        /// <summary>
+        /// パスの全コストを返します
+        /// </summary>
+        public static double GetAllPathCost(City[] cityPath)
+        {
+            double allCost = 0;
+            var pathLength = cityPath.Length;
+            for (int i = 0; i < pathLength; i++)
+            {
+                allCost += GetDistance(cityPath[i], cityPath[i < pathLength - 1 ? i + 1 : 0]);
+            }
+
+            return allCost;
+        }
     }
 }

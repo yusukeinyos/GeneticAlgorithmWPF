@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Drawing;
+using System.Windows.Forms.DataVisualization.Charting;
 using GeneitcAlgorithmWPF.Utility;
 using GeneticAlgorithmWPF.TravellingSalesmanProblem.Model;
 using GeneticAlgorithmWPF.TravellingSalesmanProblem.Utility;
@@ -39,6 +39,7 @@ namespace GeneticAlgorithmWPF
         {
             Color = Color.FromRgb(50, 205, 50),
         };
+        private static readonly Color CHART_PLOT_COLOR = Color.FromRgb(50, 205, 50);
         private static readonly double CITY_ELLIPSE_SIZE = 20;
         private static readonly double CITY_ELLIPSE_STROKE_SIZE = 5;
         private static readonly double CITY_PATH_STROKE_SIZE = 2;
@@ -50,6 +51,12 @@ namespace GeneticAlgorithmWPF
         public MainWindow()
         {
             InitializeComponent();
+
+            FittnessChart.Series.Add(new Series
+            {
+                ChartType = SeriesChartType.Line,
+                Color = System.Drawing.Color.LawnGreen,
+            });
         }
 
         /// <summary>
@@ -90,6 +97,11 @@ namespace GeneticAlgorithmWPF
             {
                 return;
             }
+        }
+
+        private double CalculatePathCost(int[] path)
+        {
+            return 0;
         }
 
         /// <summary>
@@ -156,6 +168,26 @@ namespace GeneticAlgorithmWPF
         {
             var path = Enumerable.Range(1, 7).Shuffle().ToArray();
             DrawPath(path);
+            DrawFittnessGraph(new[] { 3.4, 1, 2, 5, 7.8, 2, 3 }, true);
+        }
+
+        /// <summary>
+        /// 適用度グラフをすべて描画します
+        /// </summary>
+        private void DrawFittnessGraph(double[] y, bool clearFlag = false)
+        {
+            var series = FittnessChart?.Series?[0];
+            if (series == null)
+            {
+                return;
+            }
+
+            if (clearFlag)
+            {
+                series.Points.Clear();
+            }
+
+            series.Points.Add(y);
         }
     }
 }

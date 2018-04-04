@@ -20,6 +20,7 @@ namespace GeneticAlgorithmWPF.TravellingSalesmanProblem.Utility
                     Name = data[1],
                     X = double.Parse(data[2]),
                     Y = double.Parse(data[3]),
+                    Order = int.Parse(data[0]),
                 };
             }
         }
