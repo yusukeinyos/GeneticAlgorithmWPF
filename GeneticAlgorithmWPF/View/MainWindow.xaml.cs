@@ -99,9 +99,18 @@ namespace GeneticAlgorithmWPF
             }
         }
 
+        /// <summary>
+        /// パスのコストを計算します
+        /// </summary>
         private double CalculatePathCost(int[] path)
         {
-            return 0;
+            var cityNum = _cityList.Count;
+            for (int i = 0; i < cityNum; i++)
+            {
+                _cityList[path[i]].Order = i;
+            }
+
+            return CityUtility.GetAllPathCost(_cityList.OrderBy(x => x.Order).ToArray());
         }
 
         /// <summary>
