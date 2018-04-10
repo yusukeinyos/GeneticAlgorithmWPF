@@ -17,10 +17,13 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
 
         /// <summary> 染色体タイプ </summary>
         public ChromosomesType ChromosomesType { get; set; } = ChromosomesType.Binary;
+
         /// <summary> 選択タイプ </summary>
         public SelectionType SelectionType { get; set; } = SelectionType.Roulette;
+
         /// <summary> 初期遺伝子数 </summary>
         public int InitialPopulationsNum { get; set; } = 100;
+
         /// <summary> 遺伝子長 </summary>
         public int GeneLength { get; set; }
 
@@ -104,3 +107,4 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
             });
         }
     }
+}
