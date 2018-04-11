@@ -16,6 +16,16 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         Rank,
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum CrossOverType
+    {
+        SinglePoint,
+        DoublePoint,
+        Permutation,
+    }
+
     public static class GAUtility
     {
         #region 生成
@@ -106,7 +116,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         {
             var selectedIndex = RouletteSelection(
                 Enumerable.Range(1, fittnessValues.Length + 1).Select(x => (double)x).ToArray());
-            return fittnessValues.Select((v, i) => new {Value = v, Index = i} )
+            return fittnessValues.Select((v, i) => new { Value = v, Index = i })
                 .OrderBy(x => x.Value).ToArray()[selectedIndex].Index;
 
         }
@@ -164,6 +174,49 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
             };
         }
 
-        #endregion
+        /// <summary>
+        /// 1点交叉
+        /// </summary>
+        public static Gene[] SinglePointCrossOver(Gene parent1, Gene parent2)
+        {
+            if (parent1.Chromosomes.Count != parent2.Chromosomes.Count)
+            {
+                Console.WriteLine("親の遺伝子の長さが違います。");
+                return null;
+            }
+
+            // 交叉点
+            Random rand = new Random();
+            var crossOverPoint = rand.Next(parent1.Chromosomes.Count);
+
+            var chromosome1 = parent1.Chromosomes
+                .Take(crossOverPoint);
+
+            var chromosome2 = parent2.Chromosomes
+                .Take(crossOverPoint);
+
+            return new Gene[]
+            {
+                new Gene
+                {
+                    Chromosomes = chromosome1.Concat(parent2.Chromosomes
+                            .Skip(crossOverPoint)
+                            .Take(parent2.Chromosomes.Count - crossOverPoint))
+                        .ToList(),
+                    GenerationNum = parent1.GenerationNum + 1,
+                },
+                new Gene
+                {
+                    Chromosomes = chromosome2.Concat(parent1.Chromosomes
+                            .Skip(crossOverPoint)
+                            .Take(parent1.Chromosomes.Count - crossOverPoint))
+                        .ToList(),
+                    GenerationNum = parent2.GenerationNum + 1,
+                }
+            };
+        }
     }
+
+    #endregion
 }
+

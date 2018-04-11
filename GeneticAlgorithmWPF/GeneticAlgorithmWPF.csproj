@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GeneticAlgorithm\GASolver.cs" />
     <Compile Include="GeneticAlgorithm\Gene.cs" />
     <Compile Include="GeneticAlgorithm\Population.cs" />
     <Compile Include="GeneticAlgorithm\Utility\GAUtility.cs" />
