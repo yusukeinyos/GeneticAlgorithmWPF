@@ -10,20 +10,28 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
     /// <summary>
     /// 選択タイプ
     /// </summary>
-    public enum SelectionType
+    public enum SelectionType : byte
     {
         Roulette,
         Rank,
     }
 
     /// <summary>
-    /// 
+    /// 交叉タイプ
     /// </summary>
-    public enum CrossOverType
+    public enum CrossOverType : byte
     {
         SinglePoint,
         DoublePoint,
         Permutation,
+    }
+
+    /// <summary>
+    /// 突然変異タイプ
+    /// </summary>
+    public enum MutationType : byte
+    {
+        Swap,
     }
 
     public static class GAUtility
@@ -215,8 +223,30 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
                 }
             };
         }
+
+        #region 突然変異
+
+        /// <summary>
+        /// スワップ系
+        /// </summary>
+        public static List<T> SwapMutation<T>(List<T> chromosomes, float mutationRate)
+        {
+            if (RandomProvider.DrawLots(mutationRate, 100))
+                return chromosomes;
+
+            var count = chromosomes.Count;
+            var swapIndex = Enumerable.Range(0, count).Shuffle().Take(2).ToArray();
+
+            var temp = chromosomes[swapIndex[0]];
+            chromosomes[swapIndex[0]] = chromosomes[swapIndex[1]];
+            chromosomes[swapIndex[1]] = temp;
+
+            return chromosomes;
+        }
+
+        #endregion
     }
 
-    #endregion
+
 }
 

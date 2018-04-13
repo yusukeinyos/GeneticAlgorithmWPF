@@ -16,15 +16,23 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         {
             public readonly ChromosomesType ChromosomesType;
             public readonly SelectionType SelectionType;
+            public readonly CrossOverType CrossOverType;
+            public readonly MutationType MutationType;
+            public readonly float MutationRate;
             public readonly int InitialPopulationSize;
             public readonly int GeneLength;
+            public readonly Func<List<int>, double> CalcFunc;
 
-            public GASolverInfo(ChromosomesType chromosomesType, SelectionType selectionType, int initialPopulationSize, int geneLength)
+            public GASolverInfo(ChromosomesType chromosomesType, SelectionType selectionType, CrossOverType crossOverType, MutationType mutationType, float mutationRate, int initialPopulationSize, int geneLength, Func<List<int>, double> calcFunc)
             {
                 ChromosomesType = chromosomesType;
                 SelectionType = selectionType;
+                CrossOverType = crossOverType;
+                MutationType = mutationType;
+                MutationRate = mutationRate;
                 InitialPopulationSize = initialPopulationSize;
                 GeneLength = geneLength;
+                CalcFunc = calcFunc;
             }
         }
 
@@ -49,20 +57,29 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         /// </summary>
         public void Initialize()
         {
-            _currentPopulation = new Population
+            switch (_solverInfo.ChromosomesType)
             {
-                ChromosomesType = _solverInfo.ChromosomesType,
-                SelectionType = _solverInfo.SelectionType,
-                InitialPopulationSize = _solverInfo.InitialPopulationSize,
-                GeneLength = _solverInfo.GeneLength,
-            };
+                case ChromosomesType.Binary:
+                case ChromosomesType.Permutaion:
+                    _currentPopulation = new IntegerPopulation
+                    {
+                        ChromosomesType = _solverInfo.ChromosomesType,
+                        SelectionType = _solverInfo.SelectionType,
+                        CrossOverType = _solverInfo.CrossOverType,
+                        InitialPopulationSize = _solverInfo.InitialPopulationSize,
+                        GeneLength = _solverInfo.GeneLength,
+                        CalcFunc = _solverInfo.CalcFunc,
+                    };
+                    break;
+            }
+
 
             _currentPopulation.Initialize();
         }
 
         public void SolveAll()
         {
-            
+
         }
 
         public void SolveOneStep()
