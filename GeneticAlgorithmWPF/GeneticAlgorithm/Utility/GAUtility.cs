@@ -43,11 +43,12 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         /// </summary>
         /// <param name="chromosomesType"></param>
         /// <returns></returns>
-        public static Gene GenerateGene(ChromosomesType chromosomesType, int geneLength)
+        public static IntegerGene GenerateGene(ChromosomesType chromosomesType, Func<List<int>, double> calcFunc, int geneLength)
         {
-            var gene = new Gene
+            var gene = new IntegerGene
             {
                 GenerationNum = 0,
+                CalcFunc = calcFunc,
                 Fittness = 0,
             };
             switch (chromosomesType)
@@ -136,11 +137,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         /// <summary>
         /// 順列表現の交叉
         /// </summary>
-        public static Gene PermutationCrossOver(Gene parent1, Gene parent2)
+        public static List<T>[] PermutationCrossOver<T>(List<T> chromosomes1, List<T> chromosomes2)
         {
-            var chromosomes1 = parent1.Chromosomes;
-            var chromosomes2 = parent2.Chromosomes;
-
             var length1 = chromosomes1.Count;
             var length2 = chromosomes2.Count;
             if (length1 != length2)
@@ -152,21 +150,21 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
             Random rand = new Random();
             var toCrossOverPoint = rand.Next(length1);
             var fromCrossOverPoint = rand.Next(toCrossOverPoint);
-            var crossPart = chromosomes1.Skip(toCrossOverPoint).Take(toCrossOverPoint - fromCrossOverPoint + 1).ToArray();
+            var crossPart = chromosomes1.Skip(fromCrossOverPoint).Take(toCrossOverPoint - fromCrossOverPoint + 1).ToArray();
 
-            var offspringChromosomes = new List<int>(length1);
+            var offspringChromosomes = new List<T>(length1);
             var j = 0;
-            for (int i = 0; i < length2; i++)
+            for (int i = 0; i < length1 || j < length2; i++)
             {
                 if (i >= fromCrossOverPoint && i <= toCrossOverPoint)
                 {
-                    offspringChromosomes[i] = chromosomes1[i];
+                    offspringChromosomes.Add(chromosomes1[i]);
                 }
                 else
                 {
                     if (!crossPart.Contains(chromosomes2[j]))
                     {
-                        offspringChromosomes[i] = chromosomes2[j++];
+                        offspringChromosomes.Add(chromosomes2[j++]);
                     }
                     else
                     {
@@ -175,19 +173,15 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
                 }
             }
 
-            return new Gene
-            {
-                Chromosomes = offspringChromosomes,
-                GenerationNum = parent1.GenerationNum++,
-            };
+            return new[] { offspringChromosomes };
         }
 
         /// <summary>
         /// 1点交叉
         /// </summary>
-        public static Gene[] SinglePointCrossOver(Gene parent1, Gene parent2)
+        public static List<T>[] SinglePointCrossOver<T>(List<T> chromosomes1, List<T> chromosomes2)
         {
-            if (parent1.Chromosomes.Count != parent2.Chromosomes.Count)
+            if (chromosomes1.Count != chromosomes2.Count)
             {
                 Console.WriteLine("親の遺伝子の長さが違います。");
                 return null;
@@ -195,34 +189,28 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
 
             // 交叉点
             Random rand = new Random();
-            var crossOverPoint = rand.Next(parent1.Chromosomes.Count);
+            var crossOverPoint = rand.Next(chromosomes1.Count);
 
-            var chromosome1 = parent1.Chromosomes
+            var part1 = chromosomes1
                 .Take(crossOverPoint);
 
-            var chromosome2 = parent2.Chromosomes
+            var part2 = chromosomes2
                 .Take(crossOverPoint);
 
-            return new Gene[]
+            return new List<T>[]
             {
-                new Gene
-                {
-                    Chromosomes = chromosome1.Concat(parent2.Chromosomes
-                            .Skip(crossOverPoint)
-                            .Take(parent2.Chromosomes.Count - crossOverPoint))
-                        .ToList(),
-                    GenerationNum = parent1.GenerationNum + 1,
-                },
-                new Gene
-                {
-                    Chromosomes = chromosome2.Concat(parent1.Chromosomes
-                            .Skip(crossOverPoint)
-                            .Take(parent1.Chromosomes.Count - crossOverPoint))
-                        .ToList(),
-                    GenerationNum = parent2.GenerationNum + 1,
-                }
+                part1.Concat(chromosomes2
+                    .Skip(crossOverPoint)
+                    .Take(chromosomes2.Count - crossOverPoint))
+                    .ToList(),
+                part2.Concat(chromosomes1
+                    .Skip(crossOverPoint)
+                    .Take(chromosomes1.Count - crossOverPoint))
+                    .ToList(),
             };
         }
+
+        #endregion
 
         #region 突然変異
 

@@ -39,8 +39,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         public int PopulationSize { get; set; }
 
         private GASolverInfo _solverInfo;
-        private Population _currentPopulation;
-        private Population _nextPopulation;
+        private IntegerPopulation _currentPopulation;
+        private IntegerPopulation _nextPopulation;
 
         #region メソッド
 
@@ -83,20 +83,76 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         }
 
         public void SolveOneStep()
-        {
+        {          
+            _nextPopulation = new IntegerPopulation
+            {
+                ChromosomesType = _solverInfo.ChromosomesType,
+                SelectionType = _solverInfo.SelectionType,
+                CrossOverType = _solverInfo.CrossOverType,
+                InitialPopulationSize = _solverInfo.InitialPopulationSize,
+                GeneLength = _solverInfo.GeneLength,
+                GenerationNum = _currentPopulation.GenerationNum + 1,
+            };
+
             // 適用度の計算
             _currentPopulation.CalcAllFittness();
 
-            for (int i = 0; i < _solverInfo.InitialPopulationSize; i++)
+            // 選択
+            for (int j = 0; j < _solverInfo.InitialPopulationSize; j++)
             {
-                // 選択
-                var selectedIndex = _currentPopulation.Selection();
-                // 交叉
+                _nextPopulation.AddGene(_currentPopulation.GetGeneAt(_currentPopulation.Selection()).Chromosomes, _solverInfo.CalcFunc);
             }
 
+            for (int i = 0; i < _solverInfo.InitialPopulationSize; i++)
+            {
+                // 交叉
+                var newChromosomes = _currentPopulation.CrossOver();
 
+                // 突然変異
+                for (int j = 0; j < newChromosomes.Length; j++)
+                {
+                    switch (_solverInfo.MutationType)
+                    {
+                        case MutationType.Swap:
+                            newChromosomes[j] = GAUtility.SwapMutation(newChromosomes[j], _solverInfo.MutationRate);
+                            break;
+                    }
+                }
+
+                // 新しい遺伝子の追加
+                foreach (var newChromosome in newChromosomes)
+                {
+                    _nextPopulation.AddGene(newChromosome, _solverInfo.CalcFunc);
+                }
+            }
+
+            // 適用度の計算
+            _nextPopulation.CalcAllFittness();
+
+            // 淘汰
+            _nextPopulation.DecreasePopulation();
+
+            _currentPopulation = _nextPopulation;
         }
 
+
+
         #endregion
+
+        /// <summary>
+        /// 現在の世代の適用度をすべて取得します
+        /// </summary>
+        public List<double> GetCurrentFittnessAll()
+        {
+            return _currentPopulation.GetFittnessAll();
+        }
+
+        /// <summary>
+        /// 現在の世代の中で最大の個体を取得します
+        /// </summary>
+        public IGene<int> GetCurrentTopGene()
+        {
+            return _currentPopulation.GetTopGene();
+        }
     }
 }

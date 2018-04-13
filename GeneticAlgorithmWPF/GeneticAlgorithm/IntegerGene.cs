@@ -9,21 +9,22 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
     /// <summary>
     /// 染色体のタイプ
     /// </summary>
-    public enum ChromosomesType
+    public enum ChromosomesType : byte
     {
         Binary,
         Permutaion,
     }
 
-    public interface IGene
+    public interface IGene<T>
     {
+        List<T> Chromosomes { get; set; }
         int GenerationNum { get; set; }
         double Fittness { get; set; }
 
         void CalcFittness();
     }
 
-    public abstract class GeneBase<T> : IGene
+    public abstract class GeneBase<T> : IGene<T>
     {
         public abstract List<T> Chromosomes { get; set; }
         public abstract int GenerationNum { get; set; }
@@ -42,7 +43,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
     /// <summary>
     /// 遺伝子クラス
     /// </summary>
-    public class Gene : GeneBase<int>
+    public class IntegerGene : GeneBase<int>
     {
         public override List<int> Chromosomes { get; set; }
         public override int GenerationNum { get; set; }

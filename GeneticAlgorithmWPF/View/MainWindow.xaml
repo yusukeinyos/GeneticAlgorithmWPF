@@ -11,15 +11,16 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="400" Margin="10,10,0,0">
             <Canvas x:Name="PathCanvas" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Width="400" Height="400" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
-        <Label Content="入力データ" HorizontalAlignment="Left" Margin="426,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="InputFileNameButton" Content="選択" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,39,0,0" Click="InputFileNameButton_Click"/>
-        <Button x:Name="ConfigButton" Content="設定" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,77,0,0" Click="ConfigButton_Click"/>
-        <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="426,77,0,0"/>
-        <Button x:Name="ExecuteAllButton" Content="実行" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,221,0,0" Click="ExecuteAllButton_Click"/>
-        <Label x:Name="InputFileNameLabel" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="426,36,0,0" Width="276"/>
-        <WindowsFormsHost HorizontalAlignment="Left" Height="127" Margin="415,282,0,0" VerticalAlignment="Top" Width="367" Background="Black" >
+        <Button x:Name="InputFileNameButton" Content="入力データ選択" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="415,10,0,0" Click="InputFileNameButton_Click" FontSize="11"/>
+        <Button x:Name="ConfigButton" Content="GA各種設定" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="682,10,0,0" Click="ConfigButton_Click" FontSize="11"/>
+        <Button x:Name="ExecuteAllButton" Content="実行" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,205,0,0" Click="ExecuteAllButton_Click" FontSize="11"/>
+        <WindowsFormsHost HorizontalAlignment="Left" Height="127" Margin="415,250,0,0" VerticalAlignment="Top" Width="367" Background="Black" >
             <charting:Chart x:Name="FittnessChart" BackColor="Black" Size="367, 127" >
             </charting:Chart>
         </WindowsFormsHost>
+        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="140" Margin="415,60,0,0" VerticalAlignment="Top" Width="367"/>
+        <Button x:Name="ExecuteOneStepButton" Content="1step 実行" Margin="627,205,90,194" Click="ExecuteOneStepButton_Click" FontSize="11"/>
+        <Button x:Name="WriteLogButton" Content="ログ出力" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,389,0,0" FontSize="11" Click="WriteLogButton_Click"/>
+        <Label x:Name="InputFileNameLabel" Content="" HorizontalAlignment="Left" Margin="529,10,0,0" VerticalAlignment="Top" FontSize="11"/>
     </Grid>
 </Window>

@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using GeneticAlgorithmWPF.Caching;
 
 namespace GeneticAlgorithmWPF
 {
@@ -13,5 +14,11 @@ namespace GeneticAlgorithmWPF
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnExit(ExitEventArgs e)
+        {
+            CachingConfig.Save();
+
+            base.OnExit(e);
+        }
     }
 }

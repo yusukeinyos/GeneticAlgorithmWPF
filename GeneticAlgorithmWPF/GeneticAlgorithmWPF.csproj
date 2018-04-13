@@ -58,10 +58,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Caching\CachingConfig.cs" />
+    <Compile Include="Caching\SettingCaching.cs" />
     <Compile Include="Control\NumericTextBox.cs" />
     <Compile Include="GeneticAlgorithm\GASolver.cs" />
-    <Compile Include="GeneticAlgorithm\Gene.cs" />
-    <Compile Include="GeneticAlgorithm\Population.cs" />
+    <Compile Include="GeneticAlgorithm\IntegerGene.cs" />
+    <Compile Include="GeneticAlgorithm\IntegerPopulation.cs" />
     <Compile Include="GeneticAlgorithm\Utility\GAUtility.cs" />
     <Compile Include="Utility\FileUtility.cs" />
     <Compile Include="Utility\LinqExtensions.cs" />
