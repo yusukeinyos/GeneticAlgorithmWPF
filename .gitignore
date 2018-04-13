@@ -323,3 +323,5 @@ ASALocalRun/
 # NVidia Nsight GPU debugger configuration file
 *.nvuser
 
+# Logフォルダ配下はコミットしない
+log/*
