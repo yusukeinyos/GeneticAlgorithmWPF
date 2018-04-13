@@ -58,11 +58,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Control\NumericTextBox.cs" />
     <Compile Include="GeneticAlgorithm\GASolver.cs" />
     <Compile Include="GeneticAlgorithm\Gene.cs" />
     <Compile Include="GeneticAlgorithm\Population.cs" />
     <Compile Include="GeneticAlgorithm\Utility\GAUtility.cs" />
+    <Compile Include="Utility\FileUtility.cs" />
     <Compile Include="Utility\LinqExtensions.cs" />
+    <Compile Include="Utility\ObjectExtensions.cs" />
+    <Compile Include="Utility\RandomProvider.cs" />
     <Compile Include="View\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>

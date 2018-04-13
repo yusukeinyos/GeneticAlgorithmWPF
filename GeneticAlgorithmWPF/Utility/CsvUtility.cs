@@ -45,5 +45,20 @@ namespace GeneitcAlgorithmWPF.Utility
                 return null;
             }
         }
+
+        /// <summary>
+        /// csvファイルへの書き込み
+        /// </summary>
+        public static void WriteCsv<T>(List<T> datas, string filePath, bool append = false)
+            where T : struct
+        {
+            using (var sw = new System.IO.StreamWriter(filePath, false, Encoding.GetEncoding("shift_jis")))
+            {
+                foreach (var data in datas)
+                {
+                    sw.WriteLine(data);
+                }
+            }
+        }
     }
 }
