@@ -55,6 +55,7 @@ namespace GeneticAlgorithmWPF
         private List<Ellipse> _cityEllipseList = new List<Ellipse>();
 
         private List<double> _topFittnessList = new List<double>();
+        private List<double> _averageFittnessList = new List<double>();
 
         private GASolver _gaSolver;
 
@@ -257,6 +258,7 @@ namespace GeneticAlgorithmWPF
 
             // ログ表示
             DisplayLog(_logDisplayNum);
+            DisplaySolverInfo();
 
             //            DrawFittnessGraph(new[] { 3.4, 1, 2, 5, 7.8, 2, 3 }, true);
         }
@@ -299,6 +301,7 @@ namespace GeneticAlgorithmWPF
             }
 
             _topFittnessList.Add(topFittness);
+            _averageFittnessList.Add(_gaSolver.GetCurrentAverageFittness());
         }
 
         /// <summary>
@@ -306,7 +309,8 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void DisplaySolverInfo()
         {
-            
+            SolverInfoLabel.Content =
+                $"Generation: {_gaSolver.GetCurrentGeneration()}  TopFittness: {_gaSolver.GetCurrentTopFittness():F3}";
         }
 
         /// <summary>

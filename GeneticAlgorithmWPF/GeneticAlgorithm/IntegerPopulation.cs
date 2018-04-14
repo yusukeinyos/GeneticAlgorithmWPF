@@ -167,6 +167,22 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         }
 
         /// <summary>
+        /// 適用度の平均を返します
+        /// </summary>
+        public double GetAverageFittness()
+        {
+            return _genes.Average(x => x.Fittness);
+        }
+
+        /// <summary>
+        /// 適用度の最大値を返します
+        /// </summary>
+        public double GetTopFittness()
+        {
+            return GetTopGene().Fittness;
+        }
+
+        /// <summary>
         /// 適用度が最大の個体を取得します
         /// </summary>
         public IGene<int> GetTopGene()

@@ -83,7 +83,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         }
 
         public void SolveOneStep()
-        {          
+        {
             _nextPopulation = new IntegerPopulation
             {
                 ChromosomesType = _solverInfo.ChromosomesType,
@@ -148,11 +148,31 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         }
 
         /// <summary>
+        /// 現在の世代の適用度の平均を返します
+        /// </summary>
+        public double GetCurrentAverageFittness()
+            => _currentPopulation.GetAverageFittness();
+
+        /// <summary>
+        /// 現在の世代の適用度の最大値を返します
+        /// </summary>
+        public double GetCurrentTopFittness()
+            => _currentPopulation.GetTopFittness();
+
+        /// <summary>
         /// 現在の世代の中で最大の個体を取得します
         /// </summary>
         public IGene<int> GetCurrentTopGene()
         {
             return _currentPopulation.GetTopGene();
+        }
+
+        /// <summary>
+        /// 現在の世代数を返します
+        /// </summary>
+        public int GetCurrentGeneration()
+        {
+            return _currentPopulation.GenerationNum;
         }
     }
 }

@@ -22,5 +22,6 @@
         <Button x:Name="ExecuteOneStepButton" Content="1step 実行" Margin="627,205,90,194" Click="ExecuteOneStepButton_Click" FontSize="11"/>
         <Button x:Name="WriteLogButton" Content="ログ出力" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,389,0,0" FontSize="11" Click="WriteLogButton_Click"/>
         <Label x:Name="InputFileNameLabel" Content="" HorizontalAlignment="Left" Margin="529,10,0,0" VerticalAlignment="Top" FontSize="11"/>
+        <Label x:Name="SolverInfoLabel" Content="Generation: 0  TopFittness: " HorizontalAlignment="Left" Margin="415,389,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.092,-1.138" Width="287"/>
     </Grid>
 </Window>
