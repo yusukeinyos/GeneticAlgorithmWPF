@@ -174,5 +174,13 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         {
             return _currentPopulation.GenerationNum;
         }
+
+        /// <summary>
+        /// ソルバーの情報を成型して返します
+        /// </summary>
+        public string GetSolverInfo()
+        {
+            return $"ps={_solverInfo.InitialPopulationSize},st={_solverInfo.SelectionType},crt={_solverInfo.CrossOverType},mt={_solverInfo.MutationType},mr={_solverInfo.MutationRate}";
+        }
     }
 }
