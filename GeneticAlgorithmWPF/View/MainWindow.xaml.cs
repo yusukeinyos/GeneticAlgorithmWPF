@@ -51,6 +51,8 @@ namespace GeneticAlgorithmWPF
         private static readonly double CITY_PATH_STROKE_SIZE = 2;
         private static readonly double CITY_DRAW_EXPAND_RATIO = 50;
         private static readonly string LOG_FILE_DIRECTORY = @"C:\Users\A14753\Documents\Visual Studio 2017\Projects\GeneticAlgorithmWPF\log\";
+        private static readonly string LOG_FILENAME_PREFIX = "log";
+        private static readonly string CSV_POSTFIX = ".csv";
 
         private List<City> _cityList = new List<City>();
         private List<Ellipse> _cityEllipseList = new List<Ellipse>();
@@ -202,6 +204,8 @@ namespace GeneticAlgorithmWPF
 
             _maxGeneration = CachingConfig.SettingCaching.MaxGeneration;
             _logDisplayNum = CachingConfig.SettingCaching.LogDisplayNum;
+
+            DisplaySettingInfo(chromosomesType, selectionType, crossOverType, mutationType, mutationRate, populationSize, _maxGeneration);
 
             UpdatePhase(ExecutePhase.ExecuteReady);
         }
@@ -365,6 +369,21 @@ namespace GeneticAlgorithmWPF
             }
 
             series.Points.Add(y);
+        /// <summary>
+        /// グラフ上のすべての点を消去します
+        /// </summary>
+        private void ClearGraphAllPoints()
+        {
+            FittnessChart?.Series?[0].Points.Clear();
+        }
+
+        /// <summary>
+        /// 記録用リストをクリアします
+        /// </summary>
+        private void ClearRecordedList()
+        {
+            _topFittnessList.Clear();
+            _averageFittnessList.Clear();
         }
 
         /// <summary>
@@ -396,6 +415,19 @@ namespace GeneticAlgorithmWPF
         {
             SolverInfoLabel.Content =
                 $"Generation: {_gaSolver.GetCurrentGeneration()}  TopFittness: {_gaSolver.GetCurrentTopFittness():F3}";
+        /// <summary>
+        /// 設定情報を表示します
+        /// </summary>
+        private void DisplaySettingInfo(ChromosomesType cht, SelectionType st, CrossOverType crt, MutationType mt, float mr, int size, int ittr)
+        {
+            SettingListBox.Items.Clear();
+            SettingListBox.Items.Add($"染色体タイプ: {cht}");
+            SettingListBox.Items.Add($"選択タイプ: {st}");
+            SettingListBox.Items.Add($"交叉タイプ: {crt}");
+            SettingListBox.Items.Add($"突然変異タイプ: {mt}");
+            SettingListBox.Items.Add($"突然変異率: {mr} [%]");
+            SettingListBox.Items.Add($"個体数: {size}");
+            SettingListBox.Items.Add($"最大世代数: {ittr}");
         }
 
         /// <summary>
@@ -410,8 +442,18 @@ namespace GeneticAlgorithmWPF
 
             // logフォルダ作成
             var directoryInfo = FileUtility.SafeCreateDirectory(LOG_FILE_DIRECTORY + dateDirectoryName);
+            
+            CsvUtility.WriteCsv(_topFittnessList, directoryInfo.FullName + LOG_FILENAME_PREFIX + "(" + _gaSolver.GetSolverInfo() + ")" + CSV_POSTFIX);
+        }
 
-            CsvUtility.WriteCsv(_topFittnessList, directoryInfo.FullName + "log.csv");
+        /// <summary>
+        /// グラフクリアボタン押下時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GraphClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            ClearGraphAllPoints();
         }
     }
 }
