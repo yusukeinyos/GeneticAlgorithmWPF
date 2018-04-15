@@ -151,8 +151,10 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
                                           
                 case CrossOverType.DoublePoint:
                     return null;
-                case CrossOverType.Permutation:
-                    return GAUtility.PermutationCrossOver(_genes[targetIndeces[0]].Chromosomes, _genes[targetIndeces[1]].Chromosomes);
+                case CrossOverType.PermutationSinglePoint:
+                    return GAUtility.PermutationCrossOver(_genes[targetIndeces[0]].Chromosomes, _genes[targetIndeces[1]].Chromosomes, isSingleCross: true);
+                case CrossOverType.PermutationDoublePoint:
+                    return GAUtility.PermutationCrossOver(_genes[targetIndeces[0]].Chromosomes, _genes[targetIndeces[1]].Chromosomes, isSingleCross: false);
                 default:
                     return null;
             }

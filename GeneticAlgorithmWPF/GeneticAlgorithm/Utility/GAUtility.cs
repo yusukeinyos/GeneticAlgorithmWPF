@@ -23,7 +23,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
     {
         SinglePoint,
         DoublePoint,
-        Permutation,
+        PermutationSinglePoint,
+        PermutationDoublePoint,
     }
 
     /// <summary>
@@ -135,7 +136,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         /// <summary>
         /// 順列表現の交叉
         /// </summary>
-        public static List<T>[] PermutationCrossOver<T>(List<T> chromosomes1, List<T> chromosomes2)
+        public static List<T>[] PermutationCrossOver<T>(List<T> chromosomes1, List<T> chromosomes2, bool isSingleCross)
         {
             var length1 = chromosomes1.Count;
             var length2 = chromosomes2.Count;
