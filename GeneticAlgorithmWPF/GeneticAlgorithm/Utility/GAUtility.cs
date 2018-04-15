@@ -69,12 +69,11 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         /// </summary>
         private static List<int> GenerateBinaryChromosomes(int geneLength)
         {
-            Random rand = new Random();
             var chromosomes = new List<int>();
             for (int i = 0; i < geneLength; i++)
             {
                 chromosomes.Add(
-                    rand.Next(100) % 2 == 0
+                    RandomProvider.NextInt(100) % 2 == 0
                         ? 0
                         : 1
                 );
@@ -112,8 +111,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
                 rouletteValues[i] += rouletteValues[i - 1];
             }
 
-            Random rand = new Random();
-            return Array.FindIndex(rouletteValues, x => x > rand.NextDouble());
+            return Array.FindIndex(rouletteValues, x => x > RandomProvider.NextDouble());
         }
 
         /// <summary>
@@ -147,9 +145,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
                 return null;
             }
 
-            Random rand = new Random();
-            var toCrossOverPoint = rand.Next(length1);
-            var fromCrossOverPoint = rand.Next(toCrossOverPoint);
+            var toCrossOverPoint = RandomProvider.NextInt(length1);
+            var fromCrossOverPoint = isSingleCross ? 0 : RandomProvider.NextInt(toCrossOverPoint);
             var crossPart = chromosomes1.Skip(fromCrossOverPoint).Take(toCrossOverPoint - fromCrossOverPoint + 1).ToArray();
 
             var offspringChromosomes = new List<T>(length1);
@@ -188,8 +185,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
             }
 
             // 交叉点
-            Random rand = new Random();
-            var crossOverPoint = rand.Next(chromosomes1.Count);
+            var crossOverPoint = RandomProvider.NextInt(chromosomes1.Count);
 
             var part1 = chromosomes1
                 .Take(crossOverPoint);
