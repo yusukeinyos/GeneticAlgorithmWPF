@@ -50,7 +50,7 @@ namespace GeneticAlgorithmWPF
         private static readonly double CITY_ELLIPSE_STROKE_SIZE = 5;
         private static readonly double CITY_PATH_STROKE_SIZE = 2;
         private static readonly double CITY_DRAW_EXPAND_RATIO = 50;
-        private static readonly string LOG_FILE_DIRECTORY = @"C:\Users\A14753\Documents\Visual Studio 2017\Projects\GeneticAlgorithmWPF\log\";
+        private static readonly string LOG_FILE_DIRECTORY = @"C:\Users\Yusuke Norimatsu\Documents\Visual Studio 2015\Projects\GeneticAlgorithmWPF\log\";
         private static readonly string LOG_FILENAME_PREFIX = "log";
         private static readonly string CSV_POSTFIX = ".csv";
 
@@ -258,29 +258,32 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void DrawPath(int[] path)
         {
-            var canvasChildCount = PathCanvas.Children.Count;
-            if (canvasChildCount > _cityList.Count)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                PathCanvas.Children.RemoveRange(_cityList.Count, canvasChildCount);
-            }
-
-            var pathLength = path.Length;
-            for (int i = 0; i < pathLength; i++)
-            {
-                var cityFrom = _cityList[path[i]];
-                var cityTo = _cityList[i < pathLength - 1 ? path[i + 1] : path[0]];
-                var line = new Line
+                var canvasChildCount = PathCanvas.Children.Count;
+                if (canvasChildCount > _cityList.Count)
                 {
-                    X1 = CITY_DRAW_EXPAND_RATIO * cityFrom.X,
-                    Y1 = CITY_DRAW_EXPAND_RATIO * cityFrom.Y,
-                    X2 = CITY_DRAW_EXPAND_RATIO * cityTo.X,
-                    Y2 = CITY_DRAW_EXPAND_RATIO * cityTo.Y,
-                    Stroke = CITY_STROKE_BRUSH,
-                    StrokeThickness = CITY_PATH_STROKE_SIZE,
-                };
+                    PathCanvas.Children.RemoveRange(_cityList.Count, canvasChildCount);
+                }
 
-                PathCanvas.Children.Add(line);
-            }
+                var pathLength = path.Length;
+                for (int i = 0; i < pathLength; i++)
+                {
+                    var cityFrom = _cityList[path[i]];
+                    var cityTo = _cityList[i < pathLength - 1 ? path[i + 1] : path[0]];
+                    var line = new Line
+                    {
+                        X1 = CITY_DRAW_EXPAND_RATIO * cityFrom.X,
+                        Y1 = CITY_DRAW_EXPAND_RATIO * cityFrom.Y,
+                        X2 = CITY_DRAW_EXPAND_RATIO * cityTo.X,
+                        Y2 = CITY_DRAW_EXPAND_RATIO * cityTo.Y,
+                        Stroke = CITY_STROKE_BRUSH,
+                        StrokeThickness = CITY_PATH_STROKE_SIZE,
+                    };
+
+                    PathCanvas.Children.Add(line);
+                }
+            }));
         }
 
         /// <summary>
@@ -298,14 +301,44 @@ namespace GeneticAlgorithmWPF
         /// <summary>
         /// 全て実行ボタン押下時の処理
         /// </summary>
-        private void ExecuteAllButton_Click(object sender, RoutedEventArgs e)
+        private async void ExecuteAllButton_Click(object sender, RoutedEventArgs e)
         {
-//            for (int i = 0; i < _maxGeneration; i++)
-//            {
-//                ExecuteOneStep();
-//            }         
+            ClearRecordedList();
+            UpdatePhase(ExecutePhase.RunningAll);
 
-            ExecuteWithAnimation();
+            if (AnimeCheckBox.IsChecked.HasValue && AnimeCheckBox.IsChecked.Value)
+            {
+                ExecuteWithAnimation();
+            }
+            else
+            {
+                await ExecuteAll();
+            }
+        }
+
+        /// <summary>
+        /// すべて実行します
+        /// </summary>
+        /// <returns></returns>
+        private async Task ExecuteAll()
+        {
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < _maxGeneration; i++)
+                {
+                    ExecuteOneStep(false);
+                }
+
+                // 適用度が最大の個体
+                var topGene = _gaSolver.GetCurrentTopGene();
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    DisplayExecutingInfo(isExecuteDone: true);
+
+                    UpdatePhase(ExecutePhase.ExecuteDone);
+                }));
+            });
         }
 
         /// <summary>
@@ -336,39 +369,70 @@ namespace GeneticAlgorithmWPF
         /// <summary>
         /// １ステップ実行します
         /// </summary>
-        private void ExecuteOneStep()
+        private void ExecuteOneStep(bool isAnimationEnable = true)
         {
             // 1世代分進化させる
             _gaSolver.SolveOneStep();
 
-            // 適用度が最大の個体を描画
+            RecordExecutingInfo();
+
+            if (isAnimationEnable)
+            {
+                DisplayExecutingInfo(isExecuteDone: false);
+            }
+        }
+
+        /// <summary>
+        /// 実行時の情報を記録します
+        /// </summary>
+        private void RecordExecutingInfo()
+        {
+            _topFittnessList.Add(_gaSolver.GetCurrentTopFittness());
+            _averageFittnessList.Add(_gaSolver.GetCurrentAverageFittness());
+        }
+
+        /// <summary>
+        /// 実行時の情報を表示します
+        /// </summary>
+        private void DisplayExecutingInfo(bool isExecuteDone)
+        {
+            // 適用度が最大の個体
             var topGene = _gaSolver.GetCurrentTopGene();
+
+            // パスの描画
             DrawPath(topGene.Chromosomes.ToArray());
 
             // ログ表示
             DisplayLog(_logDisplayNum);
             DisplaySolverInfo();
 
-            //            DrawFittnessGraph(new[] { 3.4, 1, 2, 5, 7.8, 2, 3 }, true);
+            // グラフ描画
+            if (isExecuteDone)
+                DrawFittnessGraph(_topFittnessList.ToArray());
+            else
+                DrawFittnessGraph(topGene.Fittness);
         }
 
         /// <summary>
-        /// 適用度グラフをすべて描画します
+        /// 適用度グラフを描画します
         /// </summary>
-        private void DrawFittnessGraph(double[] y, bool clearFlag = false)
+        private void DrawFittnessGraph(params double[] y)
         {
-            var series = FittnessChart?.Series?[0];
-            if (series == null)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                return;
-            }
+                var series = FittnessChart?.Series?[0];
+                if (series == null)
+                {
+                    return;
+                }
 
-            if (clearFlag)
-            {
-                series.Points.Clear();
-            }
+                foreach (var v in y)
+                {
+                    series.Points.Add(v);
+                }
+            }));
+        }
 
-            series.Points.Add(y);
         /// <summary>
         /// グラフ上のすべての点を消去します
         /// </summary>
@@ -391,21 +455,20 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void DisplayLog(int displayNum)
         {
-            LogListBox.Items.Clear();
-
             var fittnessListSorted = _gaSolver.GetCurrentFittnessAll().Select((v, i) => new { Index = i, Value = v }).OrderBy(x => x.Value).ToArray();
             var displayFittness = fittnessListSorted.Take(displayNum);
             var topFittness = fittnessListSorted.First().Value;
 
-            LogListBox.Items.Add($"TopFittness: {topFittness}");
-            
-            foreach (var fittness in displayFittness)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                LogListBox.Items.Add($"Gene[{fittness.Index}]: {fittness.Value}");
-            }
+                LogListBox.Items.Clear();
+                LogListBox.Items.Add($"TopFittness: {topFittness}");
 
-            _topFittnessList.Add(topFittness);
-            _averageFittnessList.Add(_gaSolver.GetCurrentAverageFittness());
+                foreach (var fittness in displayFittness)
+                {
+                    LogListBox.Items.Add($"Gene[{fittness.Index}]: {fittness.Value}");
+                }
+            }));
         }
 
         /// <summary>
@@ -413,8 +476,13 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void DisplaySolverInfo()
         {
-            SolverInfoLabel.Content =
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SolverInfoLabel.Content =
                 $"Generation: {_gaSolver.GetCurrentGeneration()}  TopFittness: {_gaSolver.GetCurrentTopFittness():F3}";
+            }));
+        }
+
         /// <summary>
         /// 設定情報を表示します
         /// </summary>
