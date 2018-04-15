@@ -60,7 +60,7 @@ namespace GeneticAlgorithmWPF
         private GASolver _gaSolver;
 
         private int _maxGeneration;
-        private int _logDisplayNum = 3;
+        private int _logDisplayNum;
 
         /// <summary>
         /// コンストラクタ
@@ -115,18 +115,27 @@ namespace GeneticAlgorithmWPF
                 return;
             }
 
+            var chromosomesType = (ChromosomesType)CachingConfig.SettingCaching.ChromosomesTypeIndex;
+            var selectionType = (SelectionType)CachingConfig.SettingCaching.SelectionTypeIndex;
+            var crossOverType = (CrossOverType)CachingConfig.SettingCaching.CrossOverTypeIndex;
+            var mutationType = (MutationType)CachingConfig.SettingCaching.MutationTypeIndex;
+            var mutationRate = CachingConfig.SettingCaching.MutationRate;
+            var populationSize = CachingConfig.SettingCaching.PopulationSize;
+
+            // ソルバーの生成
             _gaSolver = new GASolver(new GASolver.GASolverInfo(
-                (ChromosomesType)CachingConfig.SettingCaching.ChromosomesTypeIndex,
-                (SelectionType)CachingConfig.SettingCaching.SelectionTypeIndex,
-                (CrossOverType)CachingConfig.SettingCaching.CrossOverTypeIndex,
-                (MutationType)CachingConfig.SettingCaching.MutationTypeIndex,
-                CachingConfig.SettingCaching.MutationRate,
-                CachingConfig.SettingCaching.PopulationSize,
+                chromosomesType,
+                selectionType,
+                crossOverType,
+                mutationType,
+                mutationRate,
+                populationSize,
                 _cityList.Count,
                 CalculatePathCost));
             _gaSolver.Initialize();
 
             _maxGeneration = CachingConfig.SettingCaching.MaxGeneration;
+            _logDisplayNum = CachingConfig.SettingCaching.LogDisplayNum;
         }
 
         /// <summary>

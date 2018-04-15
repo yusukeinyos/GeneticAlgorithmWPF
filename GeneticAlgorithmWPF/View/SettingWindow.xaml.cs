@@ -30,6 +30,7 @@ namespace GeneticAlgorithmWPF.View
 
             PopulationSizeComboBox.ItemsSource = new []
             {
+                new ListItem(7, "10", 10),
                 new ListItem(0, "100", 100),
                 new ListItem(1, "200", 200),
                 new ListItem(2, "500", 500),
@@ -49,6 +50,7 @@ namespace GeneticAlgorithmWPF.View
             MutationTypeComboBox.SelectedIndex = CachingConfig.SettingCaching.MutationTypeIndex;
             MutationRateInput.Text = CachingConfig.SettingCaching.MutationRate.ToString();
             MaxGenerationInput.Text = CachingConfig.SettingCaching.MaxGeneration.ToString();
+            LogDisplayNumInput.Text = CachingConfig.SettingCaching.LogDisplayNum.ToString();
         }
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace GeneticAlgorithmWPF.View
             CachingConfig.SettingCaching.MutationTypeIndex = GetListIndex(MutationTypeComboBox);
             CachingConfig.SettingCaching.MutationRate = MutationRateInput.ParseFloat(1);
             CachingConfig.SettingCaching.MaxGeneration = MaxGenerationInput.ParseInt(100);
+            CachingConfig.SettingCaching.LogDisplayNum = LogDisplayNumInput.ParseInt(3);
 
             Close();
         }

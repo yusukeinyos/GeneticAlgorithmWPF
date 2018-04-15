@@ -22,8 +22,10 @@
 
         <Control:NumericTextBox x:Name="MutationRateInput" HorizontalAlignment="Left" Height="23" Margin="109,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
         <Button x:Name="SettingApplyButton" Content="OK" HorizontalAlignment="Left" Margin="307,239,0,0" VerticalAlignment="Top" Width="75" FontSize="11" Click="SettingApplyButton_Click"/>
-        <Label x:Name="label_Copy5" Content="最大世代: " HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" FontSize="11"/>
-        <Control:NumericTextBox x:Name="MaxGenerationInput" HorizontalAlignment="Left" Height="23" Margin="109,188,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
+        <Label x:Name="label_Copy5" Content="最大世代: " HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top" FontSize="11"/>
+        <Control:NumericTextBox x:Name="MaxGenerationInput" HorizontalAlignment="Left" Height="23" Margin="109,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
+        <Label x:Name="label_Copy6" Content="ログ表示件数: " HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" FontSize="11"/>
+        <Control:NumericTextBox x:Name="LogDisplayNumInput" HorizontalAlignment="Left" Height="23" Margin="109,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
 
     </Grid>
 </Window>

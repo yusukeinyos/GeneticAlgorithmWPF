@@ -62,5 +62,12 @@ namespace GeneticAlgorithmWPF.Caching
             get => this["MaxGeneration"].IsNull<int>();
             set => this["MaxGeneration"] = value;
         }
+
+        [UserScopedSetting]
+        public int LogDisplayNum
+        {
+            get => this["LogDisplayNum"].IsNull<int>();
+            set => this["LogDisplayNum"] = value;
+        }
     }
 }
