@@ -1,22 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.Windows.Threading;
-using GeneitcAlgorithmWPF.Utility;
+﻿using GeneitcAlgorithmWPF.Utility;
 using GeneticAlgorithmWPF.Caching;
 using GeneticAlgorithmWPF.GeneticAlgorithm;
 using GeneticAlgorithmWPF.GeneticAlgorithm.Utility;
@@ -24,9 +6,28 @@ using GeneticAlgorithmWPF.TravellingSalesmanProblem.Model;
 using GeneticAlgorithmWPF.TravellingSalesmanProblem.Utility;
 using GeneticAlgorithmWPF.Utility;
 using GeneticAlgorithmWPF.View;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GeneticAlgorithmWPF
 {
+    public enum ExecutePhase
+    {
+        DataReading,
+        Setting,
+        ExecuteReady,
+        RunningOneStep,
+        RunningAll,
+        ExecuteDone,
+    }
+
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
@@ -62,6 +63,8 @@ namespace GeneticAlgorithmWPF
         private int _maxGeneration;
         private int _logDisplayNum;
 
+        private ExecutePhase _executePhase;
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -69,11 +72,69 @@ namespace GeneticAlgorithmWPF
         {
             InitializeComponent();
 
-            FittnessChart.Series.Add(new Series
+            UpdatePhase(ExecutePhase.DataReading);
+        }
+
+        /// <summary>
+        /// ボタンの有効状態を更新します
+        /// </summary>
+        private void UpdateButtonState()
+        {
+            switch (_executePhase)
             {
-                ChartType = SeriesChartType.Line,
-                Color = System.Drawing.Color.LawnGreen,
-            });
+                case ExecutePhase.DataReading:
+                    ExecuteAllButton.IsEnabled = false;
+                    ExecuteOneStepButton.IsEnabled = false;
+                    ConfigButton.IsEnabled = false;
+                    InputFileNameButton.IsEnabled = true;
+                    WriteLogButton.IsEnabled = false;
+                    break;
+                case ExecutePhase.Setting:
+                    ExecuteAllButton.IsEnabled = false;
+                    ExecuteOneStepButton.IsEnabled = false;
+                    ConfigButton.IsEnabled = true;
+                    InputFileNameButton.IsEnabled = true;
+                    WriteLogButton.IsEnabled = false;
+                    break;
+                case ExecutePhase.ExecuteReady:
+                    ExecuteAllButton.IsEnabled = true;
+                    ExecuteOneStepButton.IsEnabled = true;
+                    ConfigButton.IsEnabled = true;
+                    InputFileNameButton.IsEnabled = true;
+                    WriteLogButton.IsEnabled = false;
+                    break;
+                case ExecutePhase.RunningOneStep:
+                    ExecuteAllButton.IsEnabled = false;
+                    ExecuteOneStepButton.IsEnabled = true;
+                    ConfigButton.IsEnabled = false;
+                    InputFileNameButton.IsEnabled = false;
+                    WriteLogButton.IsEnabled = false;
+                    break;
+                case ExecutePhase.RunningAll:
+                    ExecuteAllButton.IsEnabled = false;
+                    ExecuteOneStepButton.IsEnabled = false;
+                    ConfigButton.IsEnabled = false;
+                    InputFileNameButton.IsEnabled = false;
+                    WriteLogButton.IsEnabled = false;
+                    break;
+                case ExecutePhase.ExecuteDone:
+                    ExecuteAllButton.IsEnabled = true;
+                    ExecuteOneStepButton.IsEnabled = true;
+                    ConfigButton.IsEnabled = true;
+                    InputFileNameButton.IsEnabled = true;
+                    WriteLogButton.IsEnabled = true;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 実行フェーズを更新します
+        /// </summary>
+        private void UpdatePhase(ExecutePhase nextPhase)
+        {
+            _executePhase = nextPhase;
+
+            UpdateButtonState();
         }
 
         /// <summary>
@@ -81,6 +142,8 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void InputFileNameButton_Click(object sender, RoutedEventArgs e)
         {
+            UpdatePhase(ExecutePhase.DataReading);
+
             OpenFileDialog ofd = new OpenFileDialog
             {
                 InitialDirectory = "Resources",
@@ -96,11 +159,14 @@ namespace GeneticAlgorithmWPF
                 InputFileNameLabel.Content = ofd.SafeFileName;
 
                 var datas = CsvUtility.ReadCsv(filePath, true);
+
                 _cityList.Clear();
                 _cityList = ModelUtility.GetAllCitiesModel(datas).ToList();
             }
 
             DrawCities();
+
+            UpdatePhase(ExecutePhase.Setting);
         }
 
         /// <summary>
@@ -136,6 +202,8 @@ namespace GeneticAlgorithmWPF
 
             _maxGeneration = CachingConfig.SettingCaching.MaxGeneration;
             _logDisplayNum = CachingConfig.SettingCaching.LogDisplayNum;
+
+            UpdatePhase(ExecutePhase.ExecuteReady);
         }
 
         /// <summary>
@@ -157,7 +225,9 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void DrawCities()
         {
+            PathCanvas.Children.Clear();
             _cityEllipseList.Clear();
+
             foreach (var city in _cityList)
             {
                 var ellipse = new Ellipse
@@ -214,7 +284,11 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void ExecuteOneStepButton_Click(object sender, RoutedEventArgs e)
         {
+            UpdatePhase(ExecutePhase.RunningOneStep);
+
             ExecuteOneStep();
+
+            UpdatePhase(ExecutePhase.ExecuteReady);
         }
 
         /// <summary>
@@ -247,6 +321,8 @@ namespace GeneticAlgorithmWPF
 
                 if (itteration > _maxGeneration)
                 {
+                    UpdatePhase(ExecutePhase.ExecuteDone);
+
                     // タイマーの停止
                     timer.Stop();
                 }
