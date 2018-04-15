@@ -122,7 +122,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         public static int RankSelection(double[] fittnessValues)
         {
             var selectedIndex = RouletteSelection(
-                Enumerable.Range(1, fittnessValues.Length + 1).Select(x => (double)x).ToArray());
+                Enumerable.Range(1, fittnessValues.Length).Reverse().Select(x => (double)x).ToArray());
             return fittnessValues.Select((v, i) => new { Value = v, Index = i })
                 .OrderBy(x => x.Value).ToArray()[selectedIndex].Index;
 

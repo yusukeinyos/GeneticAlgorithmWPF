@@ -94,8 +94,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
         {
             var decreaseNum = _genes.Count > InitialPopulationSize ? _genes.Count - InitialPopulationSize : 0;
 
-            // 適用度が大きい順にソート
-            _genes.Sort((x, y) => (int)(x.Fittness - y.Fittness));
+            // 適用度が小さい順にソート
+            _genes.Sort((x, y) => (int)(y.Fittness - x.Fittness));
             // 淘汰
             _genes.RemoveRange(0, decreaseNum);
         }
