@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:GeneticAlgorithmWPF"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Theme: AeroLite -->
+                <ResourceDictionary Source="/PresentationFramework.AeroLite;component/themes/aerolite.normalcolor.xaml" />
+                <!-- Style: CustomStyle -->
+                <ResourceDictionary Source="/CustomStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

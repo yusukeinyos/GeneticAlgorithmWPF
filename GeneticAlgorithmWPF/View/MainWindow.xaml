@@ -12,9 +12,9 @@
             <Canvas x:Name="PathCanvas" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Width="400" Height="400" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
         <Button x:Name="InputFileNameButton" Content="入力データ選択" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="415,10,0,0" Click="InputFileNameButton_Click" FontSize="11"/>
-        <Button x:Name="ConfigButton" Content="GA各種設定" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="415,205,0,0" Click="ConfigButton_Click" FontSize="11"/>
-        <Button x:Name="ExecuteAllButton" Content="実行" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,205,0,0" Click="ExecuteAllButton_Click" FontSize="11" Height="20"/>
-        <WindowsFormsHost HorizontalAlignment="Left" Height="127" Margin="415,257,0,0" VerticalAlignment="Top" Width="367" Background="Black" >
+        <Button x:Name="ConfigButton" Content="GA各種設定" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="415,186,0,0" Click="ConfigButton_Click" FontSize="11"/>
+        <Button x:Name="ExecuteAllButton" Content="実行" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="701,186,0,0" Click="ExecuteAllButton_Click" FontSize="11"/>
+        <WindowsFormsHost HorizontalAlignment="Left" Height="127" Margin="415,251,0,0" VerticalAlignment="Top" Width="367" Background="Black" >
             <charting:Chart x:Name="FittnessChart" BackColor="Black" Size="367, 127">
                 <charting:Chart.ChartAreas>
                     <charting:ChartArea BackColor="Black" Name="FittnessChartArea">
@@ -35,13 +35,13 @@
                 </charting:Chart.Series>
             </charting:Chart>
         </WindowsFormsHost>
-        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="140" Margin="600,60,0,0" VerticalAlignment="Top" Width="182"/>
-        <Button x:Name="ExecuteOneStepButton" Content="1step 実行" Margin="600,205,120,197.5" Click="ExecuteOneStepButton_Click" FontSize="11" Width="75" Height="20"/>
-        <Button x:Name="WriteLogButton" Content="ログ出力" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,389,0,0" FontSize="11" Click="WriteLogButton_Click"/>
+        <ListBox x:Name="LogListBox" HorizontalAlignment="Left" Height="140" Margin="600,41,0,0" VerticalAlignment="Top" Width="182"/>
+        <Button x:Name="ExecuteOneStepButton" Content="1step 実行" Margin="600,186,0,0" Click="ExecuteOneStepButton_Click" FontSize="11"/>
+        <Button x:Name="WriteLogButton" Content="ログ出力" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="702,383,0,0" FontSize="11" Click="WriteLogButton_Click"/>
         <Label x:Name="InputFileNameLabel" Content="" HorizontalAlignment="Left" Margin="529,10,0,0" VerticalAlignment="Top" FontSize="11"/>
-        <Label x:Name="SolverInfoLabel" Content="Generation: 0  TopFittness: " HorizontalAlignment="Left" Margin="415,389,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.092,-1.138" Width="287"/>
-        <CheckBox x:Name="AnimeCheckBox" Content="アニメ有効" HorizontalAlignment="Left" Margin="707,230,0,0" VerticalAlignment="Top" IsChecked="True"/>
-        <Button x:Name="GraphClearButton" Content="CL" Margin="415,232,340,170.5" FontSize="11" Height="20" Click="GraphClearButton_Click"/>
-        <ListBox x:Name="SettingListBox" HorizontalAlignment="Left" Height="140" Margin="415,60,0,0" VerticalAlignment="Top" Width="180"/>
+        <Label x:Name="SolverInfoLabel" Content="Generation: 0  TopFittness: " HorizontalAlignment="Left" Margin="415,383,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.092,-1.138" Width="287" FontSize="11"/>
+        <CheckBox x:Name="AnimeCheckBox" Content="アニメ有効" HorizontalAlignment="Left" Margin="707,211,0,0" VerticalAlignment="Top" IsChecked="True" FontSize="11"/>
+        <Button x:Name="GraphClearButton" Content="CL" Margin="415,225,0,0" FontSize="11" Click="GraphClearButton_Click" Width="32" Height="20"/>
+        <ListBox x:Name="SettingListBox" HorizontalAlignment="Left" Height="140" Margin="415,41,0,0" VerticalAlignment="Top" Width="180"/>
     </Grid>
 </Window>
