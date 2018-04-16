@@ -25,6 +25,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
 
         public abstract List<T>[] CrossOver();
 
+        public abstract void Mutation(int index);
+
         public abstract void Initialize();
 
         public abstract int Selection();
@@ -46,6 +48,10 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
 
         /// <summary> 交叉タイプ </summary>
         public CrossOverType CrossOverType { get; set; } = CrossOverType.SinglePoint;
+
+        public MutationType MutationType { get; set; } = MutationType.Swap;
+
+        public float MutationRate { get; set; } = 0;
 
         /// <summary> 初期遺伝子数 </summary>
         public int InitialPopulationSize { get; set; } = 100;
@@ -157,6 +163,16 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
                     return GAUtility.PermutationCrossOver(_genes[targetIndeces[0]].Chromosomes, _genes[targetIndeces[1]].Chromosomes, isSingleCross: false);
                 default:
                     return null;
+            }
+        }
+
+        public override void Mutation(int index)
+        {
+            switch (MutationType)
+            {
+                case MutationType.Swap:
+                    _genes[index].Chromosomes = GAUtility.SwapMutation(_genes[index].Chromosomes, MutationRate);
+                    break;
             }
         }
 

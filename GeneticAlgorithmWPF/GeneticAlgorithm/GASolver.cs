@@ -66,6 +66,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
                         ChromosomesType = _solverInfo.ChromosomesType,
                         SelectionType = _solverInfo.SelectionType,
                         CrossOverType = _solverInfo.CrossOverType,
+                        MutationType = _solverInfo.MutationType,
+                        MutationRate = _solverInfo.MutationRate,
                         InitialPopulationSize = _solverInfo.InitialPopulationSize,
                         GeneLength = _solverInfo.GeneLength,
                         CalcFunc = _solverInfo.CalcFunc,
@@ -89,6 +91,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
                 ChromosomesType = _solverInfo.ChromosomesType,
                 SelectionType = _solverInfo.SelectionType,
                 CrossOverType = _solverInfo.CrossOverType,
+                MutationType = _solverInfo.MutationType,
+                MutationRate = _solverInfo.MutationRate,
                 InitialPopulationSize = _solverInfo.InitialPopulationSize,
                 GeneLength = _solverInfo.GeneLength,
                 GenerationNum = _currentPopulation.GenerationNum + 1,
@@ -108,22 +112,17 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm
                 // 交叉
                 var newChromosomes = _currentPopulation.CrossOver();
 
-                // 突然変異
-                for (int j = 0; j < newChromosomes.Length; j++)
-                {
-                    switch (_solverInfo.MutationType)
-                    {
-                        case MutationType.Swap:
-                            newChromosomes[j] = GAUtility.SwapMutation(newChromosomes[j], _solverInfo.MutationRate);
-                            break;
-                    }
-                }
-
                 // 新しい遺伝子の追加
                 foreach (var newChromosome in newChromosomes)
                 {
                     _nextPopulation.AddGene(newChromosome, _solverInfo.CalcFunc);
                 }
+            }
+
+            // 突然変異
+            for (int j = 0; j < _nextPopulation.PopulationSize; j++)
+            {
+                _nextPopulation.Mutation(j);
             }
 
             // 適用度の計算

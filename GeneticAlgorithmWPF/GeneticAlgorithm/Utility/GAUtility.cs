@@ -112,7 +112,8 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
                 rouletteValues[i] += rouletteValues[i - 1];
             }
 
-            return Array.FindIndex(rouletteValues, x => x > RandomProvider.NextDouble());
+            var selected = RandomProvider.NextDouble();
+            return Array.FindIndex(rouletteValues, x => x > selected);
         }
 
         /// <summary>
@@ -216,7 +217,7 @@ namespace GeneticAlgorithmWPF.GeneticAlgorithm.Utility
         /// </summary>
         public static List<T> SwapMutation<T>(List<T> chromosomes, float mutationRate)
         {
-            if (RandomProvider.DrawLots(mutationRate, 100))
+            if (!RandomProvider.DrawLots(mutationRate, 100))
                 return chromosomes;
 
             var count = chromosomes.Count;
