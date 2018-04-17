@@ -176,7 +176,11 @@ namespace GeneticAlgorithmWPF
         /// </summary>
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            var settingWindow = new SettingWindow();
+            var settingWindow = new SettingWindow
+            {
+                Owner = Window.GetWindow(this),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            };
             var ret = settingWindow.ShowDialog();
             if (ret.HasValue && ret.Value)
             {

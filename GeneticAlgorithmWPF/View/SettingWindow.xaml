@@ -13,19 +13,19 @@
         <Label x:Name="label_Copy" Content="選択: " HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" FontSize="11"/>
         <Label x:Name="label_Copy1" Content="交叉: " HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" FontSize="11"/>
         <Label x:Name="label_Copy2" Content="突然変異: " HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" FontSize="11"/>
-        <ComboBox x:Name="SelectionTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Margin="75,43,0,0" FontSize="11"/>
-        <ComboBox x:Name="CrossOverTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Margin="75,72,0,0" FontSize="11"/>
-        <ComboBox x:Name="MutationTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Margin="75,107,0,0" FontSize="11"/>
+        <ComboBox x:Name="SelectionTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="75,43,0,0" FontSize="11"/>
+        <ComboBox x:Name="CrossOverTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="75,72,0,0" FontSize="11"/>
+        <ComboBox x:Name="MutationTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="75,107,0,0" FontSize="11"/>
         <Label x:Name="label_Copy3" Content="遺伝子: " HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" FontSize="11"/>
-        <ComboBox x:Name="GeneTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Margin="75,10,0,0" FontSize="11"/>
+        <ComboBox x:Name="GeneTypeComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="75,10,0,0" FontSize="11"/>
         <Label x:Name="label_Copy4" Content="突然変異率[%]: " HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" FontSize="11"/>
 
-        <Control:NumericTextBox x:Name="MutationRateInput" HorizontalAlignment="Left" Height="23" Margin="109,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
+        <Control:NumericTextBox x:Name="MutationRateInput" HorizontalAlignment="Left" Height="23" Margin="177,137,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
         <Button x:Name="SettingApplyButton" Content="OK" HorizontalAlignment="Left" Margin="307,239,0,0" VerticalAlignment="Top" Width="75" FontSize="11" Click="SettingApplyButton_Click"/>
         <Label x:Name="label_Copy5" Content="最大世代: " HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top" FontSize="11"/>
-        <Control:NumericTextBox x:Name="MaxGenerationInput" HorizontalAlignment="Left" Height="23" Margin="109,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
+        <Control:NumericTextBox x:Name="MaxGenerationInput" HorizontalAlignment="Left" Height="23" Margin="177,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
         <Label x:Name="label_Copy6" Content="ログ表示件数: " HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" FontSize="11"/>
-        <Control:NumericTextBox x:Name="LogDisplayNumInput" HorizontalAlignment="Left" Height="23" Margin="109,206,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
+        <Control:NumericTextBox x:Name="LogDisplayNumInput" HorizontalAlignment="Left" Height="23" Margin="177,203,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" FontSize="11"/>
 
     </Grid>
 </Window>
